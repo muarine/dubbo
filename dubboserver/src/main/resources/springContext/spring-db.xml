@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+				        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+						http://www.springframework.org/schema/tx 
+				        http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+	<!-- 数据源1 -->
+	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+		<property name="poolProperties">
+			<bean class="org.apache.tomcat.jdbc.pool.PoolProperties">
+				<property name="jdbcInterceptors"
+					value="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer" />
+				<property name="testWhileIdle" value="true" />
+				<property name="testOnBorrow" value="true" />
+				<property name="removeAbandoned" value="true" />
+				<property name="logAbandoned" value="true" />
+				<property name="validationQuery" value="SELECT 1" />
+				<property name="maxActive" value="10" />
+				<property name="initialSize" value="1" />
+				<property name="minIdle" value="1" />
+				<property name="maxIdle" value="2" />
+				<property name="maxWait" value="100000" />
+				<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="readDataSourceMaster" parent="dataSource">
+		<property name="url" value="${master.jdbc.url}" />
+		<property name="username" value="${master.jdbc.username}" />
+		<property name="password" value="${master.jdbc.password}" />
+	</bean>
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+  		<property name="dataSource" ref="readDataSourceMaster" />
+ 	</bean>
+	<bean id="sqlSessionFactoryMaster" class="org.mybatis.spring.SqlSessionFactoryBean">
+	  <property name="configLocation"  value="mybatis-config.xml" />
+	  <property name="mapperLocations" value="classpath*:mapper/**/*Mapper.xml" />
+	  <property name="dataSource" ref="readDataSourceMaster" />
+	</bean>
+ 	<bean id="sqlSessionMaster" class="org.mybatis.spring.SqlSessionTemplate">
+    	<constructor-arg index="0" ref="sqlSessionFactoryMaster" />
+    </bean>
+	
+	<!-- slave --> 
+	<bean id="readDataSourceSlave1" parent="dataSource">
+		<property name="url" value="${slave1.jdbc.url}" />
+		<property name="username" value="${slave1.jdbc.username}" />
+		<property name="password" value="${slave1.jdbc.password}" />
+	</bean>
+	<bean id="transactionManagerSlave1" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+  		<property name="dataSource" ref="readDataSourceSlave1" />
+ 	</bean>
+	<bean id="sqlSessionFactorySlave1" class="org.mybatis.spring.SqlSessionFactoryBean">
+	  <property name="configLocation"  value="mybatis-config.xml" />
+	  <property name="mapperLocations" value="classpath*:mapper/**/*Mapper.xml" />
+	  <property name="dataSource" ref="readDataSourceSlave1" />
+	</bean>
+ 	<bean id="sqlSessionSlave1" class="org.mybatis.spring.SqlSessionTemplate">
+    	<constructor-arg index="0" ref="sqlSessionFactorySlave1" />
+    </bean>
+    
+    <!-- DAO -->
+    
+    <bean id="logApiMasterDao" class="com.muarine.dubbo.dao.impl.LogApiMasterDao">
+    	<property name="sqlSessionFactory" ref="sqlSessionFactoryMaster" />
+    	<property name="sqlSessionTemplate" ref="sqlSessionMaster" />
+	</bean>
+    
+    <bean id="logApiSlave1Dao" class="com.muarine.dubbo.dao.impl.LogApiSlave1Dao">
+    	<property name="sqlSessionFactory" ref="sqlSessionFactorySlave1" />
+    	<property name="sqlSessionTemplate" ref="sqlSessionSlave1" />
+	</bean>
+	
+</beans>

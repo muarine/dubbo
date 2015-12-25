@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	
+	<!-- <bean id="demoService" class="com.muarine.dubboserver.impl.DemoServiceImpl" />
+	
+	<dubbo:service interface="com.muarine.dubboserver.DemoService" ref="demoService" /> -->
+	<dubbo:application name="hello-world-provider" owner="muarine" organization="rtmap" />
+	<!-- 配置线程池大小 -->
+	<!-- <dubbo:protocol threads="100" /> -->
+	<!-- 注册地址 -->
+	<!-- <dubbo:registry address="multicast://225.0.0.0:1234" /> -->
+	<!-- <dubbo:registry address="zookeeper://127.0.0.1:2181" />
+	<dubbo:protocol name="dubbo" port="20880"></dubbo:protocol> -->
+	
+	<!-- 
+	<dubbo:protocol  port="${dubbo.protocol.port}" /> 
+	<dubbo:registry id="mgRegistry" protocol="zookeeper" address="${member.dubbo.address}"/> 
+	<dubbo:protocol name="dubbo" port="-1" dispatcher="message" threads="200" />
+	<dubbo:service interface="com.multigold.interfaces.cjb.api.ICJBService" ref="cjbService" registry="N/A" />
+	<dubbo:registry id="mgRegistry" protocol="zookeeper" address="${zookeeper.dubbo.address}"/> 
+	-->
+	
+	<!-- designate implementation -->
+	<bean id="demoServiceImpl" class="com.muarine.dubbo.impl.DemoServiceImpl" />
+	<!-- Service interface Concurrent Control -->
+	<dubbo:service interface="com.muarine.dubbo.DemoService" owner="muarine" ref="demoServiceImpl"/>
+	
+	<bean id="redPackServiceImpl" class="com.muarine.dubbo.impl.RedPackServiceImpl"/>
+	<dubbo:service interface="com.muarine.dubbo.RedPackService" owner="muarine" ref="redPackServiceImpl" executes="10" actives="0" retries="2"></dubbo:service>
+</beans>
