@@ -2,9 +2,9 @@
 ## [官网地址](http://www.dubbo.io)
 ## 版本号：0.1.1-SNAPSHOT Spring-4.2.3	Mybatis-3.3.0
 ## 主要功能：
-*dubboserver 服务提供者 集成Mybatis + SpringContext 
-*实现主从读库操作，TODO：但还需要抽象封装数据库中间件
-*dubboclient 消费者集成Spring-4.2.3 
+* dubboserver 服务提供者 集成Mybatis + SpringContext 
+* 实现主从读库操作，TODO：但还需要抽象封装数据库中间件
+* dubboclient 消费者集成Spring-4.2.3 
 	
 ## 目录清单
 * **dubboclient** 服务消费者
