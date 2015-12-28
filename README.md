@@ -13,6 +13,36 @@
 * **dubbo-monitor** 后台监控 已添加
 
 ## 要做的事情
+* **配置maven setting.xml**
+
+```xml
+
+<mirror>
+	<id>central-repos2</id>
+	<name>Central repository 2</name>
+	<url>http://repo1.maven.org/maven2/</url>
+	<mirrorOf>central</mirrorOf>
+</mirror>
+<mirror>
+    <id>oschina-repos</id>
+    <name>Oschina Releases</name>
+    <url>http://maven.oschina.net/content/groups/public</url>
+	<mirrorOf>central</mirrorOf>j
+</mirror>
+<mirror>
+	<id>central-repos</id>
+	<name>Central repository</name>
+	<url>http://repo.maven.apache.org/maven2</url>
+	<mirrorOf>central</mirrorOf>
+</mirror>
+<mirror>
+    <id>java-repos</id>
+    <name>Java mirror</name>
+    <url>http://download.java.net/maven/2/</url>
+	<mirrorOf>central</mirrorOf>
+</mirror>
+
+```
 * **配置dubbo-admin**
 
 ```properties
@@ -47,4 +77,5 @@ dubbo.log4j.file=logs/dubbo-monitor-simple.log
 dubbo.log4j.level=WARN
 
 ```
+
 
