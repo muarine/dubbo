@@ -4,4 +4,8 @@
 	<settings>
 		<setting name="mapUnderscoreToCamelCase" value="false" />
 	</settings>
+	
+	<typeAliases>
+		<typeAlias alias="LogApiMapper" type="com.muarine.mapper.LogApiMapper" />
+	</typeAliases>
 </configuration>

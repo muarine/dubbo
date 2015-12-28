@@ -5,10 +5,10 @@
 		<artifactId>dubbo-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
- 	<artifactId>dubbo_client</artifactId>
+ 	<artifactId>dubboclient</artifactId>
 	<packaging>war</packaging>
 	<name>${project.artifactId}</name>
-	<description>dubbo-client</description>
+	<description>dubboclient</description>
 	
 	<properties>
 		<junit.version>4.11</junit.version>
